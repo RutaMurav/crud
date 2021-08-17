@@ -1,6 +1,6 @@
 <?php
 
-
+include('./function.php');
 
 session_start();
 if( !isset( $_SESSION['zoo'])  ){
