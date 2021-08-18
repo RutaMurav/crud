@@ -3,7 +3,7 @@
 
 include('./jsonData.php');
 
-if($_SERVER['REQUEST_METHOD'] == "POST"{
+if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 if($_POST['action'] == 'create'){
     store();
@@ -126,5 +126,4 @@ if(isset($_GET['action'])){
             </tr>
         <?php } ?>
     </table>
- </body>
 </html>
