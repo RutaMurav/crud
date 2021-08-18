@@ -1,27 +1,34 @@
 
 <?php
 
-include('./function.php');
-init();
-if($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['id'])){
-    $cars = edit();
-}
-if($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_POST['id'])){
+include('./jsonData.php');
+
+if($_SERVER['REQUEST_METHOD'] == "POST"{
+
+if($_POST['action'] == 'create'){
     store();
     header("location:./");
     die;
-}
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['Name'])){
+  }
+
+  if($_POST['action'] == 'update'){
+    update();
+    header("location:./");
+    die;
+  }
+
+  if($_POST['action'] == 'destroy'){
     destroy();
     header("location:./");
     die;
+  }
 }
-if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['id'])){
-    update();
-   header("location:./");
-   die;
-}
+$action = 'create';
 
+if(isset($_GET['action'])){
+    $animal = edit();
+    $action = 'update';
+}
 
 ?>
 
@@ -37,48 +44,49 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['id'])){
 </head>
 <body>
   <form class="form" action="" method="POST"
+  <input type="hidden" name="action" value="<?=$action?>">
   <div class="form-row">
     <div class="form-group col-sm-6">
       <label for="inputEmail4">Manufacturer</label>
-      <input class="form-control" > <value="<?= (isset($cars))? $cars['Manufacturer'] : "" ?>
+      <input class="form-control" type="text" name="Manufacturer" value=<?= (isset($cars))? $cars['Manufacturer'] : "" ?>">
 </div>
 </div>
          <div class="form-row">
          <div class="form-group col-sm-6">
       <label for="inputEmail4">Model</label>
-        <input class="form-control"> <value="<?= (isset($cars))? $cars['Model'] : "" ?>
+        <input class="form-control" type="text" name="Model" value=<?= (isset($cars))? $cars['Model'] : "" ?>">
 </div>
 </div>
         <div class="form-group col-sm-6">
       <label for="inputEmail4">Year</label>
-      <input type="text" class="form-control" > <value="<?= (isset($cars))? $cars['Year'] : "" ?>
+      <input class="form-control" type="text" name="Year" value=<?= (isset($cars))? $cars['Year'] : "" ?>">
 </div>
 </div>
       <div class="form-row">
          <div class="form-group col-sm-6">
       <label for="inputEmail4">Colour</label>
-      <input type="text" class="form-control" > <value="<?= (isset($cars))? $cars['Colour'] : "" ?>
+      <input class="form-control" type="text" name="Colour" value=<?= (isset($cars))? $cars['Colour'] : "" ?>">
 </div>
 </div>
        <div class="form-row">
          <div class="form-group col-sm-6">
       <label for="inputEmail4">Distance</label>
-      <input type="text" class="form-control" > <value="<?= (isset($cars))? $cars['distance'] : "" ?>
+      <input class="form-control" type="text" name="Distance" value=<?= (isset($cars))? $cars['Distance'] : "" ?>">
 </div>
 </div>
        <div class="form-row">
          <div class="form-group col-sm-6">
       <label for="inputEmail4">Fuel</label>
-      <input type="text" class="form-control" > <value="<?= (isset($cars))? $cars['fuel'] : "" ?>
+      <input class="form-control" type="text" name="Fuel" value=<?= (isset($cars))? $cars['Fuel'] : "" ?>">
     </div>
 </div>
 
- <?php if(!isset($cars)){
-            echo '<button class="btn btn-primary" type="submit">Prideti Automobili</button>';
+  <?php if(!isset($cars)){
+            echo '<button class="btn btn-primary" type="submit">Pridėti automobili</button>';
     }else{
             echo '
             <input type="hidden" name="id" value="'. $cars['id'].' ">
-            <button class="btn btn-info" type="submit">Redaguoti</button>';
+            <button class="btn btn-info" type="submit">Atnaujinti </button>';
     } ?>
     </form>
 
@@ -96,29 +104,27 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['id'])){
         </tr>
 
 
-      <?php $count = 0; foreach ($_SESSION['cars'] as $cars) {  ?>
-            <tr>
+      <?php $count = 0; foreach (getData() as $cars) {  ?>
+        
             <td> <?= ++$count."/".$cars['id']  ?> </td>
-                <td> <?= $cars['manufacturer']  ?> </td>
-                <td> <?= $cars['model']  ?> </td>
-                <td> <?= $cars['year']  ?> </td>
-                <td> <?= $cars['colour']  ?> </td>
-                <td> <?= $cars['distance']  ?> </td>
-                <td> <?= $cars['fuel']  ?> </td>
-                <td><a class="btn btn-success" href="?id=<?= $animal['id']  ?>">edit</a></td>
+                <td> <?= $cars['Manufacturer']  ?> </td>
+                <td> <?= $cars['Model']  ?> </td>
+                <td> <?= $cars['Year']  ?> </td>
+                <td> <?= $cars['Colour']  ?> </td>
+                <td> <?= $cars['Distance']  ?> </td>
+                <td> <?= $cars['Fuel']  ?> </td>
+                <td>
+                    <a class="btn btn-success" href="?id=<?= $cars['id']?>">edit</a></td>
+                </td>
                 <td>
                     <form action="" method="post">
-                        <input type="hidden" name="id" value="<?=$Olympics['id']?>"  >
+                        <input type="hidden" name="id" value="<?=$cars['id']?>"  >
+                        <input type="hidden" name="action" value="destroy">
                         <button class="btn btn-danger" type="submit">delete</button>
                     </form>
                 </td>
             </tr>
         <?php } ?>
     </table>
-</body>
-</html>
-  <button class="btn btn-danger" type="submit">delete</button>
-  <button class="btn btn-primary" type="submit">Prideti</button>
-  </form>
-</body>
+ </body>
 </html>

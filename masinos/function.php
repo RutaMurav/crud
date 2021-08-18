@@ -1,6 +1,6 @@
 <?php
 
-
+init();
 function init()
 {
     session_start();
@@ -10,14 +10,7 @@ function init()
     }
 }
 
-if($_SERVER['REQUEST_METHOD'] == "GET" && isset($_GET['id'])){
-    foreach($_SESSION['olympics'] as $entry) {
-        if($entry['id'] == $_GET['id']){
-            $athlet = $entry;
-            break;
-        }
-    }
-}
+
 
 function edit(){
     foreach ($_SESSION['cars'] as $entry) {
@@ -25,17 +18,6 @@ function edit(){
            return $entry;
         }
      }
-}
-if($_SERVER['REQUEST_METHOD'] == "POST"){
-    $cars['id'] = $_SESSION['id'];
-    $cars['manufaturer'] = $_POST['manufacturer'];
-    $cars['model'] = $_POST['model'];
-    $cars['year'] = $_POST['year'];
-    $cars['colour'] = $_POST['colour'];
-    $cars['distance'] = $_POST['distance'];
-    $cars['fuel'] = $_POST['fuel'];
-
-    $_SESSION['id']++;
 }
 
 function store(){
@@ -49,6 +31,8 @@ function store(){
     $cars['fuel'] = $_POST['fuel'];
     
     $_SESSION['id']++;
+
+    $_SESSION['cars'][] = $cars;
 }
 
 function destroy(){
@@ -62,7 +46,7 @@ function destroy(){
 
 function update(){
     foreach ($_SESSION['Masinos'] as &$cars) {
-        if($olympics['id'] == $_POST['id']){
+        if($cars['id'] == $_POST['id']){
         $cars['id'] = $_SESSION['id'];
     $cars['manufaturer'] = $_POST['manufacturer'];
     $cars['model'] = $_POST['model'];
