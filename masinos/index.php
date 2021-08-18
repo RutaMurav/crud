@@ -61,7 +61,7 @@ if(isset($_GET['action'])){
       <label for="inputEmail4">Year</label>
       <input class="form-control" type="text" name="Year" value=<?= (isset($cars))? $cars['Year'] : "" ?>">
 </div>
-</div>
+
       <div class="form-row">
          <div class="form-group col-sm-6">
       <label for="inputEmail4">Colour</label>
@@ -87,10 +87,8 @@ if(isset($_GET['action'])){
             echo '
             <input type="hidden" name="id" value="'. $cars['id'].' ">
             <button class="btn btn-info" type="submit">Atnaujinti </button>';
-    } ?>
-    </form>
-
-
+    } 
+    ?>
 
     <table class="table">
         <tr>
@@ -126,4 +124,5 @@ if(isset($_GET['action'])){
             </tr>
         <?php } ?>
     </table>
+      </body>
 </html>
